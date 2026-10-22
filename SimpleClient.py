@@ -23,4 +23,5 @@ def SimpleBrowser(ip, resource):
 SimpleBrowser("172.16.212.120", "/kitten.html")
 SimpleBrowser("172.16.212.120", "yaba daba doo")
 SimpleBrowser("172.16.212.120", "/puppy.html")
+SimpleBrowser("172.16.212.120", "/kitten.jpg")
 

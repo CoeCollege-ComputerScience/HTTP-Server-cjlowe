@@ -10,6 +10,8 @@ def processRequest(s,addr):
         spaceLoc = request.find(' ')
         resource = request[:spaceLoc]
         resource = resource.strip("/")
+        print("resource: " + resource)
+        resource = "public_html/" + resource
 
         if resource[-5:].lower() == ".html":
             try:
@@ -27,15 +29,101 @@ def processRequest(s,addr):
                 inFile.close()
                 s.send(response.encode("utf-8"))
         elif resource[-4:].lower() == ".jpg":
-            inFile = open(resource, "rb")
-            response = "HTTP/1.0 200 OK\r\n"
-            response += "Content-Type: image/jpeg\r\n"
-            response += "\r\n"
-            s.send(response.encode("utf-8"))
+            try:
+                inFile = open(resource, "rb")
+            except FileNotFoundError:
+                response = "Status Code 404 - Not Found\r\n"
+                response += "\r\n"
+                response += "Requested File Not Found In System"
+                s.send(response.encode("utf-8"))
+            else:
+                response = "HTTP/1.0 200 OK\r\n"
+                response += "Content-Type: image/jpeg\r\n"
+                response += "\r\n"
+                s.send(response.encode("utf-8"))
 
-            s.send(inFile.read())
-            inFile.close()
-            s.send(response.encode("utf-8"))
+                s.send(inFile.read())
+                inFile.close()
+        elif resource[-4:].lower() == ".bmp":
+            try:
+                inFile = open(resource, "rb")
+            except FileNotFoundError:
+                response = "Status Code 404 - Not Found\r\n"
+                response += "\r\n"
+                response += "Requested File Not Found In System"
+                s.send(response.encode("utf-8"))
+            else:
+                response = "HTTP/1.0 200 OK\r\n"
+                response += "Content-Type: image/bmp\r\n"
+                response += "\r\n"
+                s.send(response.encode("utf-8"))
+
+                s.send(inFile.read())
+                inFile.close()
+        elif resource[-4:].lower() == ".png":
+            try:
+                inFile = open(resource, "rb")
+            except FileNotFoundError:
+                response = "Status Code 404 - Not Found\r\n"
+                response += "\r\n"
+                response += "Requested File Not Found In System"
+                s.send(response.encode("utf-8"))
+            else:
+                response = "HTTP/1.0 200 OK\r\n"
+                response += "Content-Type: image/png\r\n"
+                response += "\r\n"
+                s.send(response.encode("utf-8"))
+
+                s.send(inFile.read())
+                inFile.close()
+        elif resource[-4:].lower() == ".gif":
+            try:
+                inFile = open(resource, "rb")
+            except FileNotFoundError:
+                response = "Status Code 404 - Not Found\r\n"
+                response += "\r\n"
+                response += "Requested File Not Found In System"
+                s.send(response.encode("utf-8"))
+            else:
+                response = "HTTP/1.0 200 OK\r\n"
+                response += "Content-Type: image/gif\r\n"
+                response += "\r\n"
+                s.send(response.encode("utf-8"))
+
+                s.send(inFile.read())
+                inFile.close()
+        elif resource[-4:].lower() == ".ico":
+            try:
+                inFile = open(resource, "rb")
+            except FileNotFoundError:
+                response = "Status Code 404 - Not Found\r\n"
+                response += "\r\n"
+                response += "Requested File Not Found In System"
+                s.send(response.encode("utf-8"))
+            else:
+                response = "HTTP/1.0 200 OK\r\n"
+                response += "Content-Type: image/x-icon\r\n"
+                response += "\r\n"
+                s.send(response.encode("utf-8"))
+
+                s.send(inFile.read())
+                inFile.close()
+                print(inFile.read())
+        elif resource[-4:].lower() == ".pdf":
+            try:
+                inFile = open(resource, "r")
+            except FileNotFoundError:
+                response = "Status Code 404 - Not Found\r\n"
+                response += "\r\n"
+                response += "Requested File Not Found In System"
+                s.send(response.encode("utf-8"))
+            else:
+                response = "HTTP/1.0 200 OK\r\n"
+                response += "Content-Type: text/html\r\n"
+                response += "\r\n"
+                response += inFile.read()
+                inFile.close()
+                s.send(response.encode("utf-8"))
         else:
             response = "Status Code 403 - Forbidden\r\n"
             response += "\r\n"
