@@ -110,8 +110,9 @@ def processRequest(s,addr):
                 inFile.close()
                 print(inFile.read())
         elif resource[-4:].lower() == ".pdf":
+            print("reached pdf")
             try:
-                inFile = open(resource, "r")
+                inFile = open(resource, "rb")
             except FileNotFoundError:
                 response = "Status Code 404 - Not Found\r\n"
                 response += "\r\n"
@@ -119,11 +120,13 @@ def processRequest(s,addr):
                 s.send(response.encode("utf-8"))
             else:
                 response = "HTTP/1.0 200 OK\r\n"
-                response += "Content-Type: text/html\r\n"
+                response += "Content-Type: image/pdf\r\n"
                 response += "\r\n"
-                response += inFile.read()
-                inFile.close()
                 s.send(response.encode("utf-8"))
+
+                s.send(inFile.read())
+                inFile.close()
+                print(inFile.read())
         else:
             response = "Status Code 403 - Forbidden\r\n"
             response += "\r\n"

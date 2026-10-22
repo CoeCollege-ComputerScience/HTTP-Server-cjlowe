@@ -10,13 +10,12 @@ def SimpleBrowser(ip, resource):
 
     s.send(msg)
     response = s.recv(1024)
-    data = ""
+    data = b""
     while response:
-        data += response.decode("utf-8")
+        data += response
         response = s.recv(1024)
-
-    #data = data.decode("utf-8")
     s.close()
+
     print(data)
 
 #SimpleBrowser("httpbin.org","/#/Anything")
@@ -24,4 +23,5 @@ SimpleBrowser("172.16.212.120", "/kitten.html")
 SimpleBrowser("172.16.212.120", "yaba daba doo")
 SimpleBrowser("172.16.212.120", "/puppy.html")
 SimpleBrowser("172.16.212.120", "/kitten.jpg")
+SimpleBrowser("172.16.212.120", "/kitten.pdf")
 
