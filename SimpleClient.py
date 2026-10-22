@@ -3,7 +3,7 @@ from netTools import *
 
 def SimpleBrowser(ip, resource):
     s = socket()
-    s.connect((ip, 8000))
+    s.connect((ip, 8002))
     msg = "GET "+ resource + " HTTP/1.0\r\n"
     msg += "\r\n"
     msg = msg.encode("utf-8")
@@ -20,5 +20,7 @@ def SimpleBrowser(ip, resource):
     print(data)
 
 #SimpleBrowser("httpbin.org","/#/Anything")
-SimpleBrowser("192.168.0.225", "/kitten.html")
+SimpleBrowser("172.16.212.120", "/kitten.html")
+SimpleBrowser("172.16.212.120", "yaba daba doo")
+SimpleBrowser("172.16.212.120", "/puppy.html")
 

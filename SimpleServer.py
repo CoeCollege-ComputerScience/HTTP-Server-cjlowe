@@ -12,14 +12,20 @@ def processRequest(s,addr):
         resource = resource.strip("/")
 
         if resource[-5:].lower() == ".html":
-            inFile = open(resource, "r")
-            response = "HTTP/1.0 200 OK\r\n"
-            response += "Content-Type: text/html\r\n"
-            response += "\r\n"
-            response += inFile.read()
-            inFile.close()
-            s.send(response.encode("utf-8"))
-
+            try:
+                inFile = open(resource, "r")
+            except FileNotFoundError:
+                response = "Status Code 404 - Not Found\r\n"
+                response += "\r\n"
+                response += "Requested File Not Found In System"
+                s.send(response.encode("utf-8"))
+            else:
+                response = "HTTP/1.0 200 OK\r\n"
+                response += "Content-Type: text/html\r\n"
+                response += "\r\n"
+                response += inFile.read()
+                inFile.close()
+                s.send(response.encode("utf-8"))
         elif resource[-4:].lower() == ".jpg":
             inFile = open(resource, "rb")
             response = "HTTP/1.0 200 OK\r\n"
@@ -30,11 +36,15 @@ def processRequest(s,addr):
             s.send(inFile.read())
             inFile.close()
             s.send(response.encode("utf-8"))
-
+        else:
+            response = "Status Code 403 - Forbidden\r\n"
+            response += "\r\n"
+            response += "Invalid Command"
+            s.send(response.encode("utf-8"))
     else:
-        response = "HTTP/1.0 501 Not Implemented\r\n"
+        response = "Status Code 403 - Forbidden\r\n"
         response += "\r\n"
-        response += "I'm sorry Dave, I can't do that."
+        response += "Invalid Command"
         s.send(response.encode("utf-8"))
 
     #response = "Gotcha"
@@ -44,7 +54,7 @@ def processRequest(s,addr):
 
 def SimpleServer():
     serversocket = socket()
-    host = getIPAddress()
+    host = "172.16.212.120"
     print("Listening on: ", host, ":8000")
     serversocket.bind((host, 8002))
     serversocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
